@@ -1,0 +1,25 @@
+﻿@model CoreAndFood.Data.Models.Category
+@{
+    ViewData["Title"] = "UpdateCategory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Add New Category</h3>
+<br />
+
+@using (Html.BeginForm("UpdateCategory", "Category", FormMethod.Post))
+{
+    @Html.LabelFor(x => x.CategoryID)
+    @Html.TextBoxFor(x => x.CategoryID, new { @class = "form-control", @readonly="@readonly"  })
+    <br />
+    @Html.LabelFor(x => x.CategoryName)
+    @Html.TextBoxFor(x => x.CategoryName, new { @class = "form-control" })//x.CategoryName name gibi aynı isimli olmalı modeldeki ile
+    @Html.ValidationMessageFor(x => x.CategoryName, "", new { @style = "color:red" }) //gelecek olan error buraya bu style ile yazılır ve CategoryName için kontrol edilir. boş bırakılan alan default yazı yazar
+    <br />
+    @Html.LabelFor(x => x.CategoryDesc)
+    @Html.TextBoxFor(x => x.CategoryDesc, new { @class = "form-control" })
+    <br />
+    <button class="btn btn-info">Update</button>
+}
+
+
