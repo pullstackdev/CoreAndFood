@@ -1,4 +1,8 @@
-﻿@model IEnumerable<CoreAndFood.Data.Models.Food>
+﻿@*model IEnumerable<CoreAndFood.Data.Models.Food>*@
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@model IPagedList<CoreAndFood.Data.Models.Food>
+@*pagination için böyle yapıldı*@
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -38,4 +42,8 @@
 
     </tbody>
 </table>
+
+@*pagination  buttons*@
+@Html.PagedListPager((IPagedList)Model, page=>Url.Action("Index", new { page}))
+
 <a href="/Food/AddFood" class="btn btn-primary">New Food</a>

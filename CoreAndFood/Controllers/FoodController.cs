@@ -6,6 +6,7 @@ using CoreAndFood.Data.Models;
 using CoreAndFood.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using X.PagedList;
 
 namespace CoreAndFood.Controllers
 {
@@ -13,9 +14,10 @@ namespace CoreAndFood.Controllers
     {
         Context context = new Context(); //db erişim
         FoodRepository foodRepository = new FoodRepository(); //instance alınmalı ki içindeki metodlar çağırıla/kullanılabilsin
-        public IActionResult Index()
+        public IActionResult Index(int page=1)
         {
-            return View(foodRepository.EntityList("Category")); //bu tablo include edilmeli, genericrepoda bu ayrı 1 metodla tanımlandı
+            return View(foodRepository.EntityList("Category").ToPagedList(page,10)); //bu tablo include edilmeli, genericrepoda bu ayrı 1 metodla tanımlandı, parametre alan include içeren metoddur
+            //ToPagedList(1,3) 1.değerden başla 3 değer getir
         }
         public IActionResult AddFood()
         {
@@ -33,6 +35,26 @@ namespace CoreAndFood.Controllers
         public IActionResult AddFood(Food food)
         {
             foodRepository.AddEntity(food); //savechanges zaten CategoryRepositoryde mevcut
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult UpdateFood(int id)
+        {
+            var food = foodRepository.GetEntity(id);
+            //category dropdownunu doldurmak için
+            List<SelectListItem> categories = (from x in context.Categories.ToList()
+                                               select new SelectListItem
+                                               {
+                                                   Text = x.CategoryName,
+                                                   Value = x.CategoryID.ToString()
+                                               }).ToList();
+            ViewBag.categories = categories;//ile gönderdik categorileri dropdownda alacağız
+            return View(food);
+        }
+        [HttpPost]
+        public IActionResult UpdateFood(Food food)
+        {
+            foodRepository.UpdateEntity(food); //savechanges zaten CategoryRepositoryde mevcut
             return RedirectToAction("Index");
         }
 

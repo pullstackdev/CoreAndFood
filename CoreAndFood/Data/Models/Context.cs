@@ -12,6 +12,13 @@ namespace CoreAndFood.Data.Models
         {
             optionsBuilder.UseSqlServer("server=DESKTOP-HGL39QT; database=DbCoreFood; integrated security=true;");
         }
+        //category status için default value true ataması - onmodelcreating ile yapılır
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Category>()
+                .Property(b => b.Status)
+                .HasDefaultValue(true);
+        }
         public DbSet<Category> Categories { get; set; }//büyük ve çoğul
         public DbSet<Food> Foods { get; set; }
 

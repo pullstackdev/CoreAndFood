@@ -13,7 +13,6 @@ namespace CoreAndFood.Controllers
         CategoryRepository categoryRepository = new CategoryRepository(); //instance alınmalı ki içindeki metodlar çağırıla/kullanılabilsin
         public IActionResult Index()
         {
-
             return View(categoryRepository.EntityList());
         }
         //default olarak httpget
@@ -45,6 +44,14 @@ namespace CoreAndFood.Controllers
                 return View("UpdateCategory");
             }
             categoryRepository.UpdateEntity(category); //savechanges zaten CategoryRepositoryde mevcut
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult DeleteCategory(int id) //foodda category id olduğu için category silme farklı, ama category de foodid alanı yok ondan food standart silme işlemi
+        {
+            var category = categoryRepository.GetEntity(id);
+            category.Status = false;
+            categoryRepository.UpdateEntity(category);
             return RedirectToAction("Index");
         }
     }
