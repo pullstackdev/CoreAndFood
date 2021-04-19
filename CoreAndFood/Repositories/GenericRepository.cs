@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions; //for expression and linq
 using System.Threading.Tasks;
 
 namespace CoreAndFood.Repositories
@@ -43,6 +44,12 @@ namespace CoreAndFood.Repositories
         public List<T> EntityList(string prm) //include gerektiren tablolarda bu metod kullanılsın, food için
         {
             return context.Set<T>().Include(prm).ToList();
+        }
+
+        //vitrin tarafı için categoriye ait foodları getir, categoryid yada foodid'ye göre arama işlemi. ne gönderilirse
+        public List<T> List(Expression<Func<T,bool>> filter) //herhangi vir sütuna göre arama yapmak için
+        {
+            return context.Set<T>().Where(filter).ToList();
         }
     }
 }

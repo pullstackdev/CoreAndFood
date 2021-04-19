@@ -21,6 +21,7 @@ namespace CoreAndFood.Data.Models
         }
         public DbSet<Category> Categories { get; set; }//büyük ve çoğul
         public DbSet<Food> Foods { get; set; }
+        public DbSet<Admin> Admins { get; set; }
 
     }
 }

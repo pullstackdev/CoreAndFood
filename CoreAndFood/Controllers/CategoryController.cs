@@ -11,8 +11,14 @@ namespace CoreAndFood.Controllers
     public class CategoryController : Controller
     {
         CategoryRepository categoryRepository = new CategoryRepository(); //instance alınmalı ki içindeki metodlar çağırıla/kullanılabilsin
-        public IActionResult Index()
+        public IActionResult Index(string p) //arama için string p koyuldu
         {
+            if (!string.IsNullOrEmpty(p)) 
+            {
+                return View(categoryRepository.List(x => x.CategoryName.Contains(p))); //aranan string değeri dön
+                //ayrıca .ToList() zaten repoda var
+            }
+
             return View(categoryRepository.EntityList());
         }
         //default olarak httpget
